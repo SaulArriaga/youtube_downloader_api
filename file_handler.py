@@ -12,9 +12,11 @@ logging.basicConfig(format='%(asctime)s |%(name)s|%(levelname)s|%(message)s',
 
 class FileHandler:
     def __init__(self, youtube_url):
-        
-        self.youtube_url = youtube_url
-        self.youtube = YouTube(youtube_url)
+        try:
+            self.youtube_url = youtube_url
+            self.youtube = YouTube(youtube_url)
+        except Exception as e:
+            raise Exception("The video doesn't exist, please verify the url")
 
     def down_load_file(self):
         logging.info(f"Start download for {self.youtube.title}")

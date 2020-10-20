@@ -21,11 +21,14 @@ def read_root():
 
 @app.post("/downloads")
 def download_file(url: str = Body(..., embed=True, alias="url")):
+    
     if not valid_url(url):
         raise HTTPException(status_code=400, detail="invalid url")
-
-    youtube = FileHandler(url)
-
-    path = youtube.down_load_file()
-
+    
+    try:
+        youtube = FileHandler(url)
+        path = youtube.down_load_file()
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
     return FileResponse(path)
